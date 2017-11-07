@@ -8,13 +8,13 @@ var config = { }
 	Port setting 
 */
 					 // default
-config.server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8888;
+config.server_port = 8888;
 
 /**
-	IP Setting: Just for OPENSHIFT case, for other ones the ip is setted in server.js code
+	IP Setting
 */
 
-config.server_ip_address = process.env.OPENSHIFT_NODEJS_IP || "0.0.0.0";
+config.server_ip_address = "0.0.0.0";
 
 
 /**

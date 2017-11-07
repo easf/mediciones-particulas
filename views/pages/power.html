@@ -33,13 +33,48 @@
 				</form> 
 			  </div>
 			</div>
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Actualizar clave de acceso</h3>
+			  </div>
+			  <div class="panel-body">
+			    	<form class="navbar-form navbar-left" onsubmit="return false;">
+					  <div class="form-group">
+					    <input id="key" type="password" class="form-control" placeholder="Introduzca la nueva clave" required>
+					  </div>
+					  <button id="resetKeyOk" class="btn btn-default">Ok</button>
+					  <label id="keyResetResp"></label>
+					</form>
+					
+			  </div>
+			</div>			
 		</main>
 		
 		<footer>
 			<% include ../partials/footer %>	
 		</footer>
-
 	</div>
+	<script>
+		(function () {
+			
+			document.getElementById ("resetKeyOk").addEventListener ("click", resetPass, false);
+			function resetPass(){
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+				  if (this.readyState == 4 && this.status == 200) {
+				    document.getElementById("keyResetResp").innerHTML = this.responseText;
+				    document.getElementById("keyResetResp").className = "alert-success";
+				  } else {
+				  	document.getElementById("keyResetResp").innerHTML = "Error en la actualización";
+				  	document.getElementById("keyResetResp").className = "alert-danger";
+				  }
+				};
+				xhttp.open("POST", "resetpass", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("key=" + document.getElementById("key").value);
+			}
+		})();
+	</script>
 </body>
 
 </html>

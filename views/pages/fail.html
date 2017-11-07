@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body>
+	<div class="container">
+
+		<header>
+			<% include ../partials/header %>
+		</header>
+		<main>
+
+			<h3 id="message" class="alert alert-danger" role="alert"></h3>
+		</main>
+		
+		<footer>
+			<% include ../partials/footer %>	
+		</footer>
+	</div>
+	<script>
+		(function() {
+			var id = "<%= id %>";
+
+			switch(id) {
+			    case 'start':
+			        document.getElementById("message").innerHTML = "Ha ocurrido un problema al iniciar el medidor";
+			        break;
+			    case 'stop':
+			        document.getElementById("message").innerHTML = "Ha ocurrido un problema al detener el medidor";
+			        break;
+				case 'pass':
+			        document.getElementById("message").innerHTML = "Clave incorrecta";
+			        break;
+				case 'noConnection':
+			        document.getElementById("message").innerHTML = "El medidor no está conectado a la red";
+			        break;
+			    default:
+			        document.getElementById("message").innerHTML = "Ha ocurrido un problema";
+			}
+		})();
+	</script>	
+</body>
+
+</html>

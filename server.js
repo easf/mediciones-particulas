@@ -6,12 +6,23 @@ var express = require("express");
 var router = require("./router");
 var APPNAME = require('./package.json').name;
 var bodyParser = require('body-parser');
-var basicAuth = require('express-basic-auth');
+var session = require('express-session');
 //var serveIndex = require('serve-index');
 
 function start(server_port, server_ip_address) {
 
   var app = express();
+
+
+  /***
+    Config app session 
+  ***/
+  app.use(session({
+    secret: 'ledMeasurerShhhh',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }));
 
   // set the view engine to ejs
   app.set( 'view engine', 'ejs' );
@@ -20,12 +31,6 @@ function start(server_port, server_ip_address) {
   ***/
   app.engine('html', require('ejs').renderFile);
   
-  /***
-    Basic authentication
-  ***/
-  app.use(basicAuth({
-    users: { 'admin': 'supersecret' }
-  }));
 
   /**
    *  Support encoding.
