@@ -2,3 +2,5 @@
 node_modules
 measurements
 serverData
+serverIo.js
+apiKey

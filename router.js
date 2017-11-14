@@ -15,20 +15,22 @@ router.route("/")
 router.route("/pass")
   .get(requestHandlers.pass);
 
-router.route("/resetpass")
-  .post(requestHandlers.resetPass);
+router.route("/reset")
+  .post(requestHandlers.reset);
 
 router.route("/power")
+  .get(requestHandlers.power)
   .post(requestHandlers.secureRedirect);
 
-router.route("/power2389564732112838990")
-  .get(requestHandlers.power);
-
+  
 router.route("/status")
   .post(requestHandlers.updateServerOperationStatus);
 
 
+router.route("/air")
+  .get(requestHandlers.updateAirStatus);
+
 router.use(express.static(__dirname + "/"));
-router.use('/measurements', serveIndex(__dirname + '/measurements'));
+router.use('/mediciones', serveIndex(__dirname + '/mediciones', {'icons': true}));
 
 module.exports = router;

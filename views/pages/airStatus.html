@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <% include ../partials/head %>
+    <meta http-equiv="refresh" content="300">
+    <style>
+       #map {
+        height: 30%;
+        width: 100%;
+       }
+    </style>    
+</head>
+
+<body>
+	<div class="container">
+
+		<header>
+			<div style="height: 10px;">
+			</div>
+			<div class="jumbotron" style="height: auto; background-image:url('public/blue-quotsplashquot.jpg');">		
+				<h1> Condición actual del aire <br><small> UC, Campus Santa Librada, Asunción</small></h1> 
+				
+				<div class="jumbotron" id="map"></div>
+				<h3 id="message" role="alert"></h3>
+				<h4 id="date"></h4>
+			</div>
+			
+		</header>
+
+		<main>
+			
+			<div class="panel panel-info">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading"><h4><strong>Interpretación de niveles según la escala del ICA</strong></h4></div>
+			  <!-- List group -->
+			  <ul class="list-group">
+			    <li class="list-group-item"><h4 class="list-group-item-heading">Bueno</h4></span>
+			    <p class="list-group-item-text"> La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.</p></li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading">Moderado</h4> La calidad del aire es aceptable pero para algunos contaminantes podría existir una preocupación moderada para la salud de un grupo muy pequeño de personas.</li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading">Insalubre para grupos sensibles</h4> Si bien las personas en general no van a sufrir en esta gama del ICA, las personas con cardiopatías y enfermedades pulmonares, los adultos mayores y los niños son más susceptibles a la presencia de partículas en el aire.</li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading">Insalubre</h4> Todos pueden comenzar a padecer efectos adversos para la salud y los miembros de los grupos sensibles pueden padecer efectos más graves.</li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading">Muy insalubre</h4> Todos pueden padecer efectos más graves para la salud.</li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading">Peligroso</h4> Son mayores las probabilidades de que toda la población esté afectada.</li>
+			  </ul>
+			</div>
+		</main>
+		
+		<footer>
+			<% include ../partials/footer %>	
+		</footer>
+	</div>
+	<script>
+		(function() {
+			var value = "<%= value %>";
+			/***
+				La escala de interpretacion del ICA
+			***/
+			var message = "Indeterminada";
+			var alertType = "alert alert-warning";
+
+			if (value >= 0 && value <= 50){
+				message = "Bueno";
+				alertType = "alert alert-success";
+			} else if (value >= 51 && value <= 100){
+				message = "Moderado";
+				alertType = "alert alert-info";
+			}  else if (value >= 101 && value <= 150){
+				message = "Insalubre para grupos sensibles";
+				alertType = "alert alert-warning";
+			} else if (value >= 151 && value <= 200){
+				message = "Insalubre";
+				alertType = "alert alert-danger";
+			} else if (value >= 201 && value <= 300){
+				message = "Muy insalubre";
+				alertType = "alert alert-danger";	
+			} else if (value >= 301){
+				message = "Peligroso";
+				alertType = "alert alert-danger";
+			}
+
+			document.getElementById("message").className = alertType;
+			document.getElementById("message").innerHTML = "En estos momentos el nivel de la calidad del aire es: " + '<strong>' + message + ' (' + Number(value).toFixed(2) + ') ' + '</strong>';
+			var date = new Date();
+			document.getElementById("date").innerHTML = 'Última actualización: ' + date.toLocaleString('es');
+
+
+
+		})();
+	      function initMap() {
+	        var uluru = {lat: -25.323276, lng: -57.6370054};
+	        var map = new google.maps.Map(document.getElementById('map'), {
+	          zoom: 15,
+	          center: uluru
+
+	        });
+	        var marker = new google.maps.Marker({
+	          position: uluru,
+	          map: map
+	        });
+	      }		
+	</script>	
+    <script async defer
+    	src="https://maps.googleapis.com/maps/api/js?key=<%= key %>&callback=initMap">
+    </script>
+</body>
+
+</html>

@@ -1,10 +1,7 @@
 var net = require('net');
 var fs = require("fs");
-
-/***
-    session variable
-***/
-var sess = null;
+const readLastLine = require('read-last-line');
+const REQUIREDROWS = 289;
 
 function start ( req, res ) {
     console.log ( "Request handler 'start' was called." );    
@@ -13,35 +10,68 @@ function start ( req, res ) {
 
 function pass ( req, res ) {
     console.log ( "Request handler 'pass' was called." );  
-    if (sess){
-        res.redirect('/power2389564732112838990');
+    var sess = req.session;
+    if (sess && sess.pass){
+            res.redirect('/power');    
+        
     } else {
         res.render( 'pages/password.html');
-    }
+    } 
+    
 }
 
-function resetPass ( req, res ) {
+function reset ( req, res ) {
     console.log ( "Request handler 'resetPass' was called." ); 
+    var success = false;
+    if (req.body.key){
+        fs.writeFile('serverData/key', req.body.key, (err) => {
+            if (err) throw err;
+            console.log(' Key access was updated succesfully');
+        });
+        success = true;
+    } else if (req.body.corrFactor){
+        fs.readFile('serverData/factors', (err, factors) => {
+            if (err) throw err;
+            var factorValues = factors.toString().split(',');
+            factorValues[0] = req.body.corrFactor;
+            fs.writeFile('serverData/factors', factorValues.join(), (err) => {
+                if (err) throw err;
+                console.log(' Correction factor was updated succesfully');
+            });
+        });
+        success = true;    
+    } else if (req.body.qFactor){
+        fs.readFile('serverData/factors', (err, factors) => {
+            if (err) throw err;
+            var factorValues = factors.toString().split(',');
+            factorValues[1] = req.body.qFactor;
+            fs.writeFile('serverData/factors', factorValues.join(), (err) => {
+                if (err) throw err;
+                console.log(' Quality factor was updated succesfully');
+            });
+        });
+        success = true;
+    }
 
-    fs.writeFile('serverData/key', req.body.key, (err) => {
-        if (err) throw err;
-        console.log(' Key access was updated succesfully');
-    });    
 
-    res.writeHead( 200, { "Content-Type": "text/html" } );
-    res.write("Clave actualizada exitosamente");
+    if (success){
+        res.writeHead( 200, { "Content-Type": "text/html" } );
+        res.write("Actualización exitosa");
+    } else {
+        res.writeHead( 500, { "Content-Type": "text/html" } );
+        res.write("Error en la actualización");        
+    }
     res.end();
 }
 
 function secureRedirect ( req, res ) {
     console.log ( "Request handler 'power' was called." );    
+    var sess=req.session;
     fs.readFile('serverData/key', (err, readKey) => {
-        if (err) throw err;
-        
+        if (err) throw err;    
         if ( req.body.key.toString() === readKey.toString() ){
-            sess=req.session;
-            res.redirect('/power2389564732112838990');
-
+            sess.pass=readKey.toString();
+            res.redirect('/power');
         } else {
             res.render( 'pages/fail.html', { id: 'pass'} );
         }
@@ -51,7 +81,8 @@ function secureRedirect ( req, res ) {
 
 function power ( req, res ) {
     console.log ( "Request handler 'power' was called." );
-    if (sess){
+    var sess=req.session;
+    if (sess && sess.pass){
         res.render( 'pages/power.html');    
     } else {
         res.redirect('/pass');
@@ -132,7 +163,7 @@ function updateServerOperationStatus(req, res){
     /***
             Conexion con el medidor
     ***/
-    client.connect(8881, '127.0.0.1', function() {
+    client.connect(3602, '172.16.5.2', function() {
             console.log('Connected');
             client.write(command);
     });
@@ -147,9 +178,73 @@ function updateServerOperationStatus(req, res){
 	
 }
 
+
+function updateAirStatus (req, res){
+    var dateTime = new Date();
+    var currentYear = dateTime.getFullYear();
+    var fileName = 'mediciones/mediciones-' + currentYear + '.csv';
+
+    readLastLine.read(fileName, REQUIREDROWS).then(function (lines) {
+        //console.log(lines.split('\n'))
+        lines = lines.split('\n');
+        //if ( isNaN(lines[0].split(',').slice(-1)[0]) ){
+
+        //}
+        if (lines.length < REQUIREDROWS) {
+            var previousYear = currentYear - 1;
+            var previousFile = 'mediciones/mediciones-' + previousYear + '.csv';        
+            readLastLine.read(previousFile, REQUIREDROWS - lines.length).then(function (remLines) {
+                remLines = remLines.split('\n');
+                //console.log(remLines);
+                lines = lines.concat(remLines);
+                console.log('\nRem Lines :'+remLines.length);
+                var currentLine = "";
+                var currentValue = "";
+                var cMedSum = 0;
+                var count = 0;
+                for (var i = lines.length - 1; i >= 0; i--) {
+                    currentLine = lines[i];
+                    if (currentLine.length > 0){
+                        currentValue = currentLine.split(',').slice(-1)[0];
+                    //  if ( ! isNaN(currentValue)  ){
+                            //console.log( Number(currentValue) );
+                            cMedSum = cMedSum + Number(currentValue);
+                            count++;
+                    //  }
+                    }
+                }
+                cMedSum = cMedSum.toFixed(10);
+                console.log(cMedSum);
+                fs.readFile('serverData/factors', (err, factors) => {
+                    if (err) throw err;    
+                    var factorValues = factors.toString().split(',');
+                    var corrFactor = Number(factorValues[0]);
+                    console.log(corrFactor);
+                    var cProm = cMedSum * corrFactor * 1000 / count;
+                    var qIndexFactor = Number(factorValues[1]);
+                    var ica = (cProm/qIndexFactor) * 100;
+                    ica = ica.toFixed(10);   
+                    console.log(ica);
+                    fs.readFile('serverData/apiKey', (err, apiKey) => {
+                        if (err) throw err;    
+                        res.render( 'pages/airStatus.html', {key: apiKey, value: ica});     
+                    });
+                    
+                });
+            });
+        }
+
+
+    }).catch( function(err) {
+        console.log(err);
+    });    
+    
+}
+
 exports.start = start;
 exports.pass = pass;
 exports.power = power;
 exports.secureRedirect = secureRedirect;
-exports.resetPass = resetPass;
+exports.reset = reset;
 exports.updateServerOperationStatus = updateServerOperationStatus;
+exports.updateAirStatus = updateAirStatus;

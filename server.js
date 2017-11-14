@@ -21,7 +21,7 @@ function start(server_port, server_ip_address) {
     secret: 'ledMeasurerShhhh',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
+    cookie: { maxAge: 120000 }
   }));
 
   // set the view engine to ejs

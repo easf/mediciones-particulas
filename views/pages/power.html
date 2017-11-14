@@ -21,13 +21,13 @@
 					<div class="form-group row">
 						<label class="col-sm-2 col-form-label">Iniciar medición:</label> 
 						<div class="col-sm-10">
-							<input class="btn btn-default btn-sm" type="submit" formmethod="post" name="iniciar" value="Iniciar"> 
+							<input class="btn btn-default btn-dg" type="submit" formmethod="post" name="iniciar" value="Iniciar"> 
 						</div>
 				 	</div>
 				 	<div class="form-group row">
 				 		<label class="col-sm-2 col-form-label"> Detener medición:</label> 
 				 		<div class="col-sm-10">
-				 			<input class="btn btn-default btn-sm" type="submit" formmethod="post" name="detener" value="Detener"> 
+				 			<input class="btn btn-default btn-dg" type="submit" formmethod="post" name="detener" value="Detener"> 
 				 		</div>
 				 	</div>
 				</form> 
@@ -40,11 +40,38 @@
 			  <div class="panel-body">
 			    	<form class="navbar-form navbar-left" onsubmit="return false;">
 					  <div class="form-group">
-					    <input id="key" type="password" class="form-control" placeholder="Introduzca la nueva clave" required>
+					    <input id="key" type="password" class="form-control" placeholder="Ingrese el nuevo valor" required>
 					  </div>
 					  <button id="resetKeyOk" class="btn btn-default">Ok</button>
 					  <label id="keyResetResp"></label>
 					</form>
+			</div>
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Actualizar el factor de corrección</h3>
+			  </div>			
+			<div class="panel-body">
+			    	<form class="navbar-form navbar-left" onsubmit="return false;">
+					  <div class="form-group">
+					    <input id="corrFactor" type="number" min="0.01" step="0.01" class="form-control" placeholder="Ingrese el nuevo valor" required>
+					  </div>
+					  <button id="resetCorrFactorOk" class="btn btn-default">Ok</button>
+					  <label id="corrFactorResetResp"></label>
+					</form>
+			</div>
+			</div>
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Actualizar el factor de calidad</h3>
+			  </div>
+			<div class="panel-body">					
+			    	<form class="navbar-form navbar-left" onsubmit="return false;">
+					  <div class="form-group">
+					    <input id="qFactor" type="number" min="1" class="form-control" placeholder="Ingrese el nuevo valor" required>
+					  </div>
+					  <button id="resetQFactorOk" class="btn btn-default">Ok</button>
+					  <label id="qFactorResetResp"></label>
+					</form>										
 					
 			  </div>
 			</div>			
@@ -57,21 +84,39 @@
 	<script>
 		(function () {
 			
-			document.getElementById ("resetKeyOk").addEventListener ("click", resetPass, false);
-			function resetPass(){
+			var resetKeyOk = document.getElementById('resetKeyOk');
+			resetKeyOk.addEventListener("click", resetPass, false);
+			resetKeyOk.resp = "keyResetResp";
+			resetKeyOk.path = "reset";
+			resetKeyOk.input = "key";
+
+			var resetCorrFactorOk = document.getElementById('resetCorrFactorOk');
+			resetCorrFactorOk.addEventListener("click", resetPass, false);
+			resetCorrFactorOk.resp = "corrFactorResetResp";
+			resetCorrFactorOk.path = "reset";
+			resetCorrFactorOk.input = "corrFactor";
+
+			var resetQFactorOk = document.getElementById('resetQFactorOk');
+			resetQFactorOk.addEventListener("click", resetPass, false);
+			resetQFactorOk.resp = "qFactorResetResp";
+			resetQFactorOk.path = "reset";
+			resetQFactorOk.input = "qFactor";
+			//document.getElementById ("resetKeyOk").addEventListener ("click", resetPass, false);
+
+			function resetPass(evt){
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 				  if (this.readyState == 4 && this.status == 200) {
-				    document.getElementById("keyResetResp").innerHTML = this.responseText;
-				    document.getElementById("keyResetResp").className = "alert-success";
+				    document.getElementById(evt.target.resp).innerHTML = this.responseText;
+				    document.getElementById(evt.target.resp).className = "alert-success";
 				  } else {
-				  	document.getElementById("keyResetResp").innerHTML = "Error en la actualización";
-				  	document.getElementById("keyResetResp").className = "alert-danger";
+				  	document.getElementById(evt.target.resp).innerHTML = "Error en la actualización";
+				  	document.getElementById(evt.target.resp).className = "alert-danger";
 				  }
 				};
-				xhttp.open("POST", "resetpass", true);
+				xhttp.open("POST", evt.target.path, true);
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-				xhttp.send("key=" + document.getElementById("key").value);
+				xhttp.send(evt.target.input + "=" + document.getElementById(evt.target.input).value);
 			}
 		})();
 	</script>

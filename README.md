@@ -1,15 +1,24 @@
 //todo: readme
 
+/***
+	Breve descripción
+***/
+Este repositorio incluye una aplicación web para acceder al medidor de partículas y un programa independiente 	(mRegister) que recolecta y registra las mediciones en archivos.
+
 Carpetas
 	/***
 		Contiene los archivos de las mediciones
 	***/
-	measurements
+	mediciones
 
 	/***
 		Contiene los modules de node.js instalado
 	***/
 	node_modules
+
+	/***
+		Contiene archivos con datos utilizados por la aplicación web y clientNet.js
+	***/
 	serverData
 	views
 
@@ -56,5 +65,16 @@ package.json
 	Programa que obtiene las mediciones y las registra en arvhivos csv
 ***/
 
-clientNet.js
+mRegister.js
 
+
+
+
+/***
+	Temperatura
+***/
+
+/***
+	Tiempo real
+***/
+Tomar las mediciones de las últimas 24 horas
