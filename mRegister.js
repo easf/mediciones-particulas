@@ -3,6 +3,8 @@ var fs = require('fs');
 var csvWriter = require('csv-write-stream');
 const readLastLine = require('read-last-line');
 var mCalculator = require('./mCalculator');
+var config = require('./config');
+
 var N = 1000 * 60 * 4;
 var currentDateTime = "";
 
@@ -12,9 +14,9 @@ function askForMeasurement(callback){
 	var client = new net.Socket();
 
 	/***
-		Configurar el ip y el puerto del medidor 3602, '172.16.5.2'
+		Configurar el ip y el puerto del medidor
 	***/
-	client.connect(3602, '172.16.5.2', function() {
+	client.connect(config.measurer_port, config.measurer_ip_address, function() {
 		console.log('Connected');
 		/***
 			Envio del comando para leer la ultima medicion registrada por el medidor
@@ -81,29 +83,18 @@ function askForMeasurement(callback){
 			           	  fs.appendFile(file, dateTimeToRegister.toLocaleDateString('es') + ',' +  dateTimeToRegister.toLocaleTimeString('es', { hour12: false }) + ',' + currentElapsedTime + ',' + currentMeasurement + "\n", function (err) {
 			                  if (err) throw err;
 			                  console.log( currentDateTime + ' The file has been saved!');
-			                  /***
-			                  	Calcular y actualizar las condiciones del aire
-			                  ***/
-			                  //mCalculator.updateAirStatus();
+
 			               });
 				          
 
 				      } else if(err.code == 'ENOENT') {
-				          // file does not exist
-				          //var writer = csvWriter({ headers: ["fecha", "hora", "tiempo transcurrido", "medicion"]});
-				          //var writer = csvWriter();
-				          //writer.pipe(fs.createWriteStream(file));
-				          //writer.write({fecha: dateTimeToRegister.toLocaleDateString('es'), hora: dateTimeToRegister.toLocaleTimeString('es', { hour12: false }), tiempoTranscurrido: currentElapsedTime, medicion: currentMeasurement});
-				          //writer.end();
+
 		                  fs.writeFile(file, dateTimeToRegister.toLocaleDateString('es') + ',' + dateTimeToRegister.toLocaleTimeString('es', { hour12: false }) + ',' + currentElapsedTime + ',' + currentMeasurement + '\n', (err) => {
 		                      if (err) throw err;
 		                      var currentDateTime = new Date().toLocaleString('es').replace(/T/, ' ').replace(/\..+/, '');
 		                       console.log( currentDateTime + ' New measurement file created and updated!');
 		                  });				          
-				          /***
-			                  	Calcular y actualizar las condiciones del aire
-			              ***/
-				          //mCalculator.updateAirStatus();
+
 				      } else {
 				      	  currentDateTime = new Date().toLocaleString('es').replace(/T/, ' ').replace(/\..+/, '');
 				          console.log( currentDateTime + 'Some other error: ', err.code);

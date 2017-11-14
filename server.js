@@ -7,6 +7,7 @@ var router = require("./router");
 var APPNAME = require('./package.json').name;
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var config = require('./config');
 //var serveIndex = require('serve-index');
 
 function start(server_port, server_ip_address) {
@@ -18,10 +19,10 @@ function start(server_port, server_ip_address) {
     Config app session 
   ***/
   app.use(session({
-    secret: 'ledMeasurerShhhh',
+    secret: config.secret_key,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 120000 }
+    cookie: { maxAge: config.max_age }
   }));
 
   // set the view engine to ejs

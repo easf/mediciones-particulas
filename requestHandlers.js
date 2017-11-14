@@ -1,6 +1,8 @@
 var net = require('net');
-var fs = require("fs");
+var fs = require('fs');
+var config = require('./config');
 const readLastLine = require('read-last-line');
+
 const REQUIREDROWS = 289;
 
 function start ( req, res ) {
@@ -111,7 +113,7 @@ function updateServerOperationStatus(req, res){
             Evento de recepcion de respuesta del medidor
         ***/
         client.on('data', function(data) {
-            console.log(data);
+            
             if (data.toString().indexOf("OK") > -1){
                 
                 /***
@@ -139,7 +141,7 @@ function updateServerOperationStatus(req, res){
             Evento de recepcion de respuesta del medidor
         ***/
         client.on('data', function(data) {
-            console.log(data);
+            
             if (data.toString().indexOf("OK") > -1){
                 res.render( "pages/success.html", { id:'stop'} );
             }else{
@@ -163,7 +165,7 @@ function updateServerOperationStatus(req, res){
     /***
             Conexion con el medidor
     ***/
-    client.connect(3602, '172.16.5.2', function() {
+    client.connect(config.measurer_port, config.measurer_ip_address, function() {
             console.log('Connected');
             client.write(command);
     });
@@ -185,19 +187,17 @@ function updateAirStatus (req, res){
     var fileName = 'mediciones/mediciones-' + currentYear + '.csv';
 
     readLastLine.read(fileName, REQUIREDROWS).then(function (lines) {
-        //console.log(lines.split('\n'))
+        
         lines = lines.split('\n');
-        //if ( isNaN(lines[0].split(',').slice(-1)[0]) ){
-
-        //}
+        
         if (lines.length < REQUIREDROWS) {
             var previousYear = currentYear - 1;
             var previousFile = 'mediciones/mediciones-' + previousYear + '.csv';        
             readLastLine.read(previousFile, REQUIREDROWS - lines.length).then(function (remLines) {
                 remLines = remLines.split('\n');
-                //console.log(remLines);
+                
                 lines = lines.concat(remLines);
-                console.log('\nRem Lines :'+remLines.length);
+                
                 var currentLine = "";
                 var currentValue = "";
                 var cMedSum = 0;
@@ -206,25 +206,22 @@ function updateAirStatus (req, res){
                     currentLine = lines[i];
                     if (currentLine.length > 0){
                         currentValue = currentLine.split(',').slice(-1)[0];
-                    //  if ( ! isNaN(currentValue)  ){
-                            //console.log( Number(currentValue) );
                             cMedSum = cMedSum + Number(currentValue);
                             count++;
-                    //  }
                     }
                 }
                 cMedSum = cMedSum.toFixed(10);
-                console.log(cMedSum);
+                
                 fs.readFile('serverData/factors', (err, factors) => {
                     if (err) throw err;    
                     var factorValues = factors.toString().split(',');
                     var corrFactor = Number(factorValues[0]);
-                    console.log(corrFactor);
+                
                     var cProm = cMedSum * corrFactor * 1000 / count;
                     var qIndexFactor = Number(factorValues[1]);
                     var ica = (cProm/qIndexFactor) * 100;
                     ica = ica.toFixed(10);   
-                    console.log(ica);
+                
                     fs.readFile('serverData/apiKey', (err, apiKey) => {
                         if (err) throw err;    
                         res.render( 'pages/airStatus.html', {key: apiKey, value: ica});     

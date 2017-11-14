@@ -3,7 +3,7 @@
 /***
 	Breve descripción
 ***/
-Este repositorio incluye una aplicación web para acceder al medidor de partículas y un programa independiente 	(mRegister) que recolecta y registra las mediciones en archivos.
+Este repositorio incluye una aplicación web para acceder al medidor de partículas, un programa independiente 	(mRegister) que recolecta y registra las mediciones en archivos  
 
 Carpetas
 	/***
@@ -54,7 +54,7 @@ package.json
 	router.js
 
 	/***
-
+		Funciones que atienden las consultas sobre las rutas 
 	***/
 	requestHandlers.js
 	
@@ -67,14 +67,3 @@ package.json
 
 mRegister.js
 
-
-
-
-/***
-	Temperatura
-***/
-
-/***
-	Tiempo real
-***/
-Tomar las mediciones de las últimas 24 horas
