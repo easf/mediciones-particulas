@@ -2,7 +2,6 @@ var net = require('net');
 var fs = require('fs');
 var csvWriter = require('csv-write-stream');
 const readLastLine = require('read-last-line');
-var mCalculator = require('./mCalculator');
 var config = require('./config');
 
 var N = 1000 * 60 * 4;
