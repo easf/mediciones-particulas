@@ -6,3 +6,5 @@ serverIo.js
 apiKey
 mCalculator
 config.js
+realTime/node_modules
+realTime/apiKey

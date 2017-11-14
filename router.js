@@ -27,10 +27,8 @@ router.route("/status")
   .post(requestHandlers.updateServerOperationStatus);
 
 
-router.route("/air")
-  .get(requestHandlers.updateAirStatus);
-
 router.use(express.static(__dirname + "/"));
-router.use('/mediciones', serveIndex(__dirname + '/mediciones', {'icons': true}));
+router.use(express.static(__dirname + "/realTime"));
+router.use('/mediciones', serveIndex(__dirname + '/realTime/mediciones', {'icons': true}));
 
 module.exports = router;
