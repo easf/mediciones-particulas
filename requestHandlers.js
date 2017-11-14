@@ -26,7 +26,7 @@ function reset ( req, res ) {
     console.log ( "Request handler 'resetPass' was called." ); 
     var success = false;
     if (req.body.key){
-        fs.writeFile('serverData/key', req.body.key, (err) => {
+        fs.writeFile('../serverData/key', req.body.key, (err) => {
             if (err) throw err;
             console.log(' Key access was updated succesfully');
         });
@@ -69,7 +69,7 @@ function reset ( req, res ) {
 function secureRedirect ( req, res ) {
     console.log ( "Request handler 'power' was called." );    
     var sess=req.session;
-    fs.readFile('serverData/key', (err, readKey) => {
+    fs.readFile('../serverData/key', (err, readKey) => {
         if (err) throw err;    
         if ( req.body.key.toString() === readKey.toString() ){
             sess.pass=readKey.toString();
