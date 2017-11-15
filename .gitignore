@@ -1,11 +1,10 @@
 .gitignore
 node_modules
-measurements
 serverData
+realTime/node_modules
+realTime/apiKey
+realTime/mediciones
 serverIo.js
 apiKey
 mCalculator
 config.js
-realTime/node_modules
-realTime/apiKey
-realTime/mediciones
