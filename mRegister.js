@@ -69,7 +69,7 @@ function askForMeasurement(callback){
 				    
 				    var startDate = new Date(startDateMilliseconds).toLocaleString('es').replace(/\//g,'-').replace(' ', '-');
 				    //var file = "measurements/mediciones" + "-" + currentMonth + "-" + currentYear + ".csv";
-				    var file = "mediciones/mediciones" + "-" + currentYear + ".csv"; 
+				    var file = "realTime/mediciones/mediciones" + "-" + currentYear + ".csv"; 
 				    var dateTime = new Date();
 	  				/***
 						Se agrega la nueva medicion al archivo
