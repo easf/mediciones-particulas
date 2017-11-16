@@ -69,7 +69,7 @@ function secureRedirect ( req, res ) {
     var sess=req.session;
     fs.readFile('serverData/key', (err, readKey) => {
         if (err) throw err;    
-        if ( req.body.key.toString() === readKey.toString() ){
+        if ( req.body.key.toString() === readKey.toString().replace('\n','') ){
             sess.pass=readKey.toString();
             res.redirect('/power');
         } else {
