@@ -28,21 +28,42 @@
 		</header>
 
 		<main>
-			
+			<div class="panel panel-info">
+			  <div class="panel-heading"><h4><strong>Índice de calidad del aire (ICA)</strong></h4></div>	
+			  <div class="panel-body">
+			  	<p class="text-justify">
+			    	El índice de calidad del aire (ICA) se ha de interpretar como un indicador de la calidad del aire sobre una base del promedio en 24 horas, obtenido a partir de mediciones de PM2.5 realizadas por el grupo de investigación en contaminación atmosférica del Departamento de Ingeniería Civil, Industrial y Ambiental (DICIA) de la Facultad de Ciencias y Tecnología UC. Para la elaboración del ICA se han tomado como referencia la definición del índice de calidad del aire de la Agencia de Protección Ambiental de EE.UU. (EPA) y las guías de la Organización Mundial de la Salud (OMS) para la contaminación atmosférica por partículas finas PM2.5.
+			    </p>
+			  </div>
+			</div>
 			<div class="panel panel-info">
 			  <!-- Default panel contents -->
 			  <div class="panel-heading"><h4><strong>Interpretación de niveles según la escala del ICA</strong></h4></div>
 			  <!-- List group -->
 			  <ul class="list-group">
 			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">0-50</span> Bueno</h4></span>
-			    <p class="list-group-item-text"> La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.</p></li>
-			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">51-100</span> Moderado</h4> La calidad del aire es aceptable pero para algunos contaminantes podría existir una preocupación moderada para la salud de un grupo muy pequeño de personas.</li>
-			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">101-150</span> Insalubre para grupos sensibles</h4> Si bien las personas en general no van a sufrir en esta gama del ICA, las personas con cardiopatías y enfermedades pulmonares, los adultos mayores y los niños son más susceptibles a la presencia de partículas en el aire.</li>
-			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">151-200</span> Insalubre</h4> Todos pueden comenzar a padecer efectos adversos para la salud y los miembros de los grupos sensibles pueden padecer efectos más graves.</li>
-			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">201-300</span> Muy insalubre</h4> Todos pueden padecer efectos más graves para la salud.</li>
-			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">301-500</span> Peligroso</h4> Son mayores las probabilidades de que toda la población esté afectada.</li>
+			    <p class="list-group-item-text text-justify"> La calidad del aire se considera satisfactoria y la contaminación atmosférica presenta un riesgo escaso o nulo.</p></li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">51-100</span> Moderado</h4> <p class="list-group-item-text text-justify"> La calidad del aire es aceptable pero podría existir una preocupación moderada para la salud de un grupo muy pequeño de personas extraordinariamente susceptibles.</p></li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">101-150</span> Insalubre para grupos sensibles</h4> <p class="list-group-item-text text-justify">Si bien las personas en general no van a sufrir en esta gama del ICA, las personas con cardiopatías y enfermedades pulmonares, los adultos mayores y los niños son más susceptibles a la presencia de partículas en el aire.</p></li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">151-200</span> Insalubre</h4><p class="list-group-item-text text-justify"> Todos pueden comenzar a padecer efectos adversos para la salud y los miembros de los grupos sensibles pueden padecer efectos más graves.</p></li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">201-300</span> Muy insalubre</h4><p class="list-group-item-text text-justify"> Todos pueden padecer efectos más graves para la salud.</p></li>
+			    <li class="list-group-item"><h4 class="list-group-item-heading"><span class="badge">301-500</span> Peligroso</h4><p class="list-group-item-text text-justify"> Son mayores las probabilidades de que toda la población esté afectada.</p></li>
 			  </ul>
 			</div>
+			<div class="panel panel-info">
+			  <div class="panel-heading"><h4><strong>Aviso de uso</strong></h4></div>	
+			  
+				  <ul class="list-group">
+				    <li class="list-group-item">
+				    <p class="list-group-item-text text-justify"> Los datos publicados son solamente 		indicativos del nivel de calidad del aire para fines de información y uso personal, y no constituyen datos oficiales para fines de verificación de cumplimiento de normativas nacionales.</p></li>
+				    <li class="list-group-item"><p class="list-group-item-text text-justify"> Todos los datos de la calidad del aire no están validados en el momento de la publicación y estos
+					datos pueden modificarse, sin previo aviso, en cualquier momento como resultado del control de calidad.</p></li>
+				    <li class="list-group-item"><p class="list-group-item-text text-justify">El grupo de investigación ha ejercitado todas las habilidades y cuidados razonables al generar
+					esta información y bajo ninguna circunstancia serán responsables por cualquier pérdida, lesión o daño que surja directa o indirectamente del suministro de estos datos.</p></li>
+				    <li class="list-group-item"><p class="list-group-item-text text-justify"> Para más información, póngase en contacto con el grupo de investigación: <a href="mailto:aire@uc.edu.py">aire@uc.edu.py</a>.</p></li>
+				  </ul>
+			  </div>
+		
 		</main>
 		
 		<footer>
@@ -79,11 +100,12 @@
 			}
 
 			document.getElementById("message").className = alertType;
-			document.getElementById("message").innerHTML = "En estos momentos el nivel de la calidad del aire es: " + '<strong>' + message + ' (' + Number(value).toFixed(2) + ') ' + '</strong>';
+			document.getElementById("message").innerHTML = "En estos momentos el índice de calidad del aire de PM2.5 es: " + '<strong>' + message + ' (' + Number(value).toFixed(0) + ') ' + '</strong>';
 			var date = new Date();
 			document.getElementById("date").innerHTML = 'Última actualización: ' + date.toLocaleString('es');
 
-
+			var d = new Date();
+			document.getElementById("foot").innerHTML = 'Powered by LED | ' + d.getFullYear();
 
 		})();
 	      function initMap() {
