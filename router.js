@@ -11,7 +11,6 @@ var serveIndex = require('serve-index');
 router.route("/")
   .get(requestHandlers.start);
 
-
 router.route("/pass")
   .get(requestHandlers.pass);
 
@@ -21,7 +20,6 @@ router.route("/reset")
 router.route("/power")
   .get(requestHandlers.power)
   .post(requestHandlers.secureRedirect);
-
   
 router.route("/status")
   .post(requestHandlers.updateServerOperationStatus);
