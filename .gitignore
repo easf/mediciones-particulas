@@ -4,6 +4,7 @@ serverData
 realTime/node_modules
 realTime/apiKey
 realTime/mediciones
+realTime/factors
 serverIo.js
 apiKey
 mCalculator
