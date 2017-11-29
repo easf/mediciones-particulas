@@ -73,10 +73,11 @@
 	<script>
 		(function() {
 			var value = "<%= value %>";
+			value = Number(value).toFixed(0);
 			/***
 				La escala de interpretacion del ICA
 			***/
-			var message = "Indeterminada";
+			var message = "Indeterminado";
 			var alertType = "alert alert-warning";
 
 			if (value >= 0 && value <= 50){
@@ -100,7 +101,7 @@
 			}
 
 			document.getElementById("message").className = alertType;
-			document.getElementById("message").innerHTML = "En estos momentos el índice de calidad del aire de PM2.5 es: " + '<strong>' + message + ' (' + Number(value).toFixed(0) + ') ' + '</strong>';
+			document.getElementById("message").innerHTML = "En estos momentos el índice de calidad del aire de PM2.5 es: " + '<strong>' + message + ' (' + value + ') ' + '</strong>';
 			var date = new Date();
 			document.getElementById("date").innerHTML = 'Última actualización: ' + date.toLocaleString('es');
 
