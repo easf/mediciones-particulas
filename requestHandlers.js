@@ -123,6 +123,12 @@ function updateServerOperationStatus(req, res){
                     console.log( currentDateTime + ' Start date was updated succesfully');
                 });
 
+                fs.writeFile('serverData/stopped', false, (err) => {
+                    if (err) throw err;
+                    var currentDateTime = new Date().toLocaleString('es').replace(/T/, ' ').replace(/\..+/, '');
+                    console.log( currentDateTime + ' Start date was updated succesfully');
+                });
+
                 res.render( "pages/success.html", { id:'start' } );
 
             } else {
@@ -139,8 +145,13 @@ function updateServerOperationStatus(req, res){
             Evento de recepcion de respuesta del medidor
         ***/
         client.on('data', function(data) {
-            
+
             if (data.toString().indexOf("OK") > -1){
+                fs.writeFile('serverData/stopped', true, (err) => {
+                    if (err) throw err;
+                    var currentDateTime = new Date().toLocaleString('es').replace(/T/, ' ').replace(/\..+/, '');
+                    console.log( currentDateTime + ' Start date was updated succesfully');
+                });                
                 res.render( "pages/success.html", { id:'stop'} );
             }else{
                 res.render( "pages/fail.html", { id:'stop'});

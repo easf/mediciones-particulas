@@ -43,10 +43,13 @@ function calculate (res, lines) {
         var qIndexFactor = Number(factorValues[1]);
         var ica = (cProm/qIndexFactor) * 100;
         ica = ica.toFixed(10);   
-    
-        fs.readFile('apiKey', (err, apiKey) => {
+
+        fs.readFile('../serverData/stopped', (err, readStopped) => {
             if (err) throw err;    
-            res.render( 'pages/airStatus.html', {key: apiKey, value: ica});     
+            fs.readFile('apiKey', (err, apiKey) => {
+                if (err) throw err;    
+                res.render( 'pages/airStatus.html', {key: apiKey, value: ica, isStopped: readStopped});     
+            });
         });
     });	
 }
@@ -64,8 +67,8 @@ app.get('/', function (req, res) {
                 remLines = remLines.split('\n');
                 lines = lines.concat(remLines);
  				calculate(res, lines);               
-
             });
+
         }else{
         	calculate(res, lines);
         }

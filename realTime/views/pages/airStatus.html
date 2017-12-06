@@ -100,8 +100,15 @@
 				alertType = "alert alert-danger";
 			}
 
-			document.getElementById("message").className = alertType;
-			document.getElementById("message").innerHTML = "En estos momentos el índice de calidad del aire de PM2.5 es: " + '<strong>' + message + ' (' + value + ') ' + '</strong>';
+			var isStopped = "<%= isStopped %>";
+			if (isStopped === 'true') {
+				document.getElementById("message").className = "alert alert-warning";
+				document.getElementById("message").innerHTML = "En estos momentos el medidor no se encuentra operativo";
+				swal("¡Atención!", "En estos momentos el medidor no se encuentra operativo", "warning");
+			} else {
+				document.getElementById("message").className = alertType;
+				document.getElementById("message").innerHTML = "En estos momentos el índice de calidad del aire de PM2.5 es: " + '<strong>' + message + ' (' + value + ') ' + '</strong>';
+			}
 			var date = new Date();
 			document.getElementById("date").innerHTML = 'Última actualización: ' + date.toLocaleString('es');
 
