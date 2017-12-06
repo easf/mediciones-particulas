@@ -46,9 +46,10 @@ function calculate (res, lines) {
 
         fs.readFile('../serverData/stopped', (err, readStopped) => {
             if (err) throw err;    
+            var valStopped = readStopped.toString().split('\n')[0];
             fs.readFile('apiKey', (err, apiKey) => {
                 if (err) throw err;    
-                res.render( 'pages/airStatus.html', {key: apiKey, value: ica, isStopped: readStopped});     
+                res.render( 'pages/airStatus.html', {key: apiKey, value: ica, stopped: valStopped});     
             });
         });
     });	
